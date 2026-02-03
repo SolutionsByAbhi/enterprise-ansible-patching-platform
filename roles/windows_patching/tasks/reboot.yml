@@ -1,0 +1,7 @@
+---
+-  name:  Reboot  Windows if  allowed  and  required
+   ansible.windows.win_reboot:
+       msg: "Reboot  initiated  by  Ansible patching"
+       pre_reboot_delay:  10
+       post_reboot_delay: 60
+    when: reboot_allowed  |  bool
