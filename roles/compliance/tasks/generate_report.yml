@@ -1,0 +1,22 @@
+ ---
+ -  name: Find  all  patch  reports
+    ansible.builtin.find:
+        paths: "{{  report_output_dir  |  default('./reports') }}"
+        patterns:  "*patch_*.json"
+    register:  patch_reports
+ 
+-  name:  Read  patch report  files
+    ansible.builtin.slurp:
+        src:  "{{  item.path }}"
+     loop: "{{  patch_reports.files  }}"
+    register:  report_contents
+ 
+-  name:  Build  combined report  data
+    ansible.builtin.set_fact:
+        combined_reports:  "{{  report_contents.results |  map(attribute='content')  |  map('b64decode') |  map('from_json')  |  list }}"
+ 
+ -  name: Generate  compliance  HTML  summary
+    ansible.builtin.template:
+        src: compliance_report.j2
+        dest:  "{{  report_output_dir |  default('./reports')  }}/compliance_summary.html"
+        mode: "0644"
