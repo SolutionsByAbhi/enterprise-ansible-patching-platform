@@ -1,0 +1,8 @@
+{
+   "host":  "{{ inventory_hostname  }}",
+   "os_family":  "Windows",
+   "date":  "{{  ansible_date_time.date  }}",
+   "time":  "{{ ansible_date_time.time  }}",
+   "release_id":  "{{  win_release.stdout  | default('unknown')  }}",
+   "reboot_allowed":  "{{  reboot_allowed  }}"
+}
