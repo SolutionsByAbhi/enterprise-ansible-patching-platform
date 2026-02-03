@@ -1,0 +1,33 @@
+---
+-  name:  Ensure patch  log  directory  exists
+   ansible.builtin.file:
+       path: "{{  patch_log_dir  }}"
+       state: directory
+       mode:  "0755"
+
+-  name:  Check  disk space
+    ansible.builtin.shell: df  -h  /
+   register:  disk_space
+   changed_when:  false
+
+-  name:  Get  current kernel  version
+   ansible.builtin.shell:  uname  -r
+   register:  current_kernel
+   changed_when:  false
+
+-  name:  Check  for pending  reboot  (Debian/Ubuntu)
+   ansible.builtin.stat:
+       path:  /var/run/reboot-required
+   register:  reboot_required
+   when:  ansible_os_family ==  "Debian"
+
+- name:  Write  precheck  summary to  log
+   ansible.builtin.copy:
+       dest:  "{{  patch_log_dir }}/precheck_{{  inventory_hostname  }}.log"
+       content: |
+           Host: {{  inventory_hostname  }}
+          Date:  {{  ansible_date_time.date }}  {{  ansible_date_time.time  }}
+          Disk:  {{ disk_space.stdout_lines  |  join('  ') }}
+           Kernel: {{  current_kernel.stdout  }}
+          Pending  reboot:  {{ reboot_required.stat.exists  |  default(false)  }}
+   mode:  "0644"
