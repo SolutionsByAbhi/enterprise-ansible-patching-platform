@@ -1,0 +1,16 @@
+---
+-  name:  Pre-patch checks  for  all  servers
+   hosts:  linux_servers:windows_servers
+   gather_facts:  yes
+   become:  yes
+
+    roles:
+      -  role:  linux_patching
+          when:  "'linux'  in ansible_system  |  lower"
+          tags:  ["precheck",  "linux"]
+          linux_patching_phase:  "precheck"
+
+       -  role:  windows_patching
+          when:  ansible_os_family ==  "Windows"
+          tags:  ["precheck",  "windows"]
+          windows_patching_phase:  "precheck"
