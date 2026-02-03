@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Patch  Compliance  Summary</title>
+   <style>
+       body {  font-family:  Arial,  sans-serif; }
+       table  {  border-collapse: collapse;  width:  100%;  }
+      th,  td  {  border: 1px  solid  #ddd;  padding: 8px;  }
+       th  { background-color:  #333;  color:  white; }
+       tr:nth-child(even)  {  background-color: #f2f2f2;  }
+   </style>
+</head>
+<body>
+   <h1>Patch  Compliance  Summary</h1>
+   <p>Generated  at: {{  ansible_date_time.date  }}  {{ ansible_date_time.time  }}</p>
+   <table>
+       <tr>
+          <th>Host</th>
+           <th>OS Family</th>
+           <th>Kernel/Release</th>
+          <th>Reboot  Allowed</th>
+      </tr>
+       {%  for  r in  combined_reports  %}
+       <tr>
+          <td>{{  r.host }}</td>
+           <td>{{ r.os_family  }}</td>
+          <td>{{  r.kernel_version  |  default(r.release_id |  default('n/a'))  }}</td>
+          <td>{{  r.reboot_allowed  }}</td>
+      </tr>
+       {%  endfor  %}
+   </table>
+</body>
+</html>
