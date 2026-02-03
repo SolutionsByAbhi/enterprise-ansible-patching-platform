@@ -1,0 +1,21 @@
+ ---
+ -  name: Patch  Linux  servers
+    hosts:  linux_servers
+    gather_facts:  yes
+    become:  yes
+ 
+    roles:
+        - role:  linux_patching
+           linux_patching_phase:  "patch"
+           tags:  ["patch",  "linux"]
+ 
+       -  role:  linux_patching
+           linux_patching_phase:  "reboot"
+           tags:  ["reboot",  "linux"]
+
+        -  role:  linux_patching
+           linux_patching_phase:  "verify"
+           tags:  ["verify", "linux"]
+ 
+        -  role: compliance
+            tags: ["report",  "linux"]
