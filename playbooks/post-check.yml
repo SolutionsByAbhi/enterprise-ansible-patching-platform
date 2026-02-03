@@ -1,0 +1,16 @@
+---
+-  name:  Post-patch  checks for  all  servers
+   hosts:  linux_servers:windows_servers
+   gather_facts:  yes
+   become:  yes
+
+   roles:
+       - role:  linux_patching
+          when:  "'linux'  in  ansible_system |  lower"
+          linux_patching_phase:  "verify"
+          tags:  ["postcheck",  "linux"]
+
+      -  role:  windows_patching
+          when:  ansible_os_family  == "Windows"
+           windows_patching_phase: "verify"
+           tags: ["postcheck",  "windows"]
