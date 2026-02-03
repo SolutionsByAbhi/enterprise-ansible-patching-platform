@@ -1,0 +1,20 @@
+---
+-  name:  Patch Windows  servers
+   hosts:  windows_servers
+   gather_facts:  yes
+
+   roles:
+       -  role: windows_patching
+           windows_patching_phase: "patch"
+           tags: ["patch",  "windows"]
+
+       - role:  windows_patching
+          windows_patching_phase:  "reboot"
+          tags:  ["reboot",  "windows"]
+
+      -  role:  windows_patching
+          windows_patching_phase:  "verify"
+          tags:  ["verify",  "windows"]
+
+       -  role:  compliance
+          tags:  ["report", "windows"]
