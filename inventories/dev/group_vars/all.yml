@@ -1,0 +1,10 @@
+patch_window_start:  "02:00"
+patch_window_end:  "04:00"
+reboot_allowed:  true
+patch_log_dir:  "/var/log/patching"
+patch_report_dir:  "./reports/dev"
+linux_patch_strategy:  "security"   #  all  | security
+windows_patch_category:  "SecurityUpdates"
+
+elk_logstash_host:  "logstash.dev.local"
+elk_logstash_port:  5044
