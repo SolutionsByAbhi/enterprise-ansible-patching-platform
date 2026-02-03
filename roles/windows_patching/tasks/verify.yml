@@ -1,0 +1,11 @@
+ ---
+ -  name: Get  OS  version
+    ansible.windows.win_shell:  "(Get-ItemProperty  'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion').ReleaseId"
+     register: win_release
+     changed_when: false
+ 
+ -  name: Generate  Windows  patch  report
+    ansible.builtin.template:
+        src: patch_report.j2
+        dest:  "{{  patch_report_dir }}/windows_patch_{{  inventory_hostname  }}.json"
+        mode: "0644"
