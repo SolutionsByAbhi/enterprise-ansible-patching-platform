@@ -1,0 +1,11 @@
+---
+-  name:  Generate patch  compliance  report
+   hosts:  localhost
+   gather_facts:  no
+
+   vars:
+       report_output_dir: "./reports"
+
+   roles:
+       -  role:  compliance
+          tags:  ["compliance", "report"]
