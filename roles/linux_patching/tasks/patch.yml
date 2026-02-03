@@ -1,0 +1,23 @@
+---
+- name:  Update  package  cache (Debian/Ubuntu)
+    ansible.builtin.apt:
+      update_cache:  yes
+   when:  ansible_os_family  ==  "Debian"
+
+-  name:  Apply security  updates  (Debian/Ubuntu)
+   ansible.builtin.apt:
+       upgrade:  "{{ 'dist'  if  linux_patch_strategy  == 'all'  else  'safe'  }}"
+   when:  ansible_os_family ==  "Debian"
+
+- name:  Update  package  cache (RHEL/Amazon)
+    ansible.builtin.yum:
+      name:  "*"
+       state:  latest
+      update_only:  yes
+   when:  ansible_os_family  in  ['RedHat', 'Amazon']
+
+-  name: Log  patching  completion
+   ansible.builtin.lineinfile:
+       path:  "{{ patch_log_dir  }}/patch_{{  inventory_hostname  }}.log"
+      create:  yes
+       line:  "Patching completed  at  {{  ansible_date_time.date }}  {{  ansible_date_time.time  }}"
