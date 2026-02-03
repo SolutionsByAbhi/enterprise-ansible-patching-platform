@@ -1,0 +1,27 @@
+ name:  Scheduled  Patching
+
+ on:
+    schedule:
+        -  cron:  "0 2  *  *  6"   #  Every  Saturday at  02:00
+    workflow_dispatch:
+ 
+ jobs:
+    patch-dev:
+        runs-on:  ubuntu-latest
+       steps:
+            - uses:  actions/checkout@v4
+           -  name:  Install  Ansible
+              run:  pip  install  ansible
+           -  name: Run  pre-check
+               run:  ansible-playbook -i  inventories/dev/hosts.ini  playbooks/pre-check.yml
+           -  name:  Patch Linux
+               run:  ansible-playbook  -i inventories/dev/hosts.ini  playbooks/patch-linux.yml
+           -  name:  Patch  Windows
+              run:  ansible-playbook  -i  inventories/dev/hosts.ini playbooks/patch-windows.yml
+            - name:  Generate  compliance  report
+              run:  ansible-playbook  playbooks/compliance-report.yml
+           -  name:  Upload reports
+               uses:  actions/upload-artifact@v4
+               with:
+                  name:  dev-patch-reports
+                  path:  reports/
