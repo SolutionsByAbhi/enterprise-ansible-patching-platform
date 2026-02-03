@@ -1,0 +1,14 @@
+---
+-  name:  Gather  Windows facts
+    ansible.builtin.setup:
+
+-  name:  Check pending  reboot
+   ansible.windows.win_reg_stat:
+       path:  HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto  Update\RebootRequired
+   register:  win_reboot_required
+
+-  name:  Write precheck  log
+   ansible.windows.win_lineinfile:
+       path:  "C:\\patching\\precheck_{{  inventory_hostname }}.log"
+       create:  yes
+       line: "Pending  reboot:  {{  win_reboot_required.exists }}"
