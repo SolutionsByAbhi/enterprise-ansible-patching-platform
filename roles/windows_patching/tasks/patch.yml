@@ -1,0 +1,19 @@
+---
+-  name:  Ensure  patching directory  exists
+   ansible.windows.win_file:
+       path:  C:\patching
+       state: directory
+
+-  name: Install  Windows  updates
+   ansible.windows.win_updates:
+       category_names:
+          -  "{{  windows_patch_category }}"
+       reboot:  no
+   register:  win_updates_result
+
+-  name:  Log  updates installed
+    ansible.windows.win_copy:
+      dest:  "C:\\patching\\patch_{{  inventory_hostname  }}.log"
+      content:  |
+          Installed  updates:
+          {{  win_updates_result.updates  |  to_nice_json }}
