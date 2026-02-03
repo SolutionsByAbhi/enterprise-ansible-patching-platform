@@ -1,0 +1,4 @@
+windows_patching_phase: "patch"
+windows_patch_category:  "{{  windows_patch_category |  default('SecurityUpdates')  }}"
+patch_report_dir: "{{  patch_report_dir  |  default('./reports') }}"
+reboot_allowed:  "{{  reboot_allowed |  default(true)  }}"
