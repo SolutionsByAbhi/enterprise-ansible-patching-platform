@@ -1,0 +1,6 @@
+ linux_patching_phase:  "patch"
+ 
+linux_patch_strategy:  "{{  linux_patch_strategy  | default('security')  }}"
+ patch_log_dir:  "{{ patch_log_dir  |  default('/var/log/patching')  }}"
+patch_report_dir:  "{{  patch_report_dir  | default('./reports')  }}"
+ reboot_allowed:  "{{ reboot_allowed  |  default(true)  }}"
